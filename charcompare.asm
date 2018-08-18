@@ -1,0 +1,48 @@
+; program to compare two characters and display message accordingly
+
+.8086
+.MODEL SMALL
+.DATA
+  CHAR DB " "
+  MESSAGE1 DB 0AH,0DH,'****FIRST IS GREATER****','$'
+  MESSAGE2 DB 0AH,0DH,'****SECOND IS GREATER****','$'
+  MESSAGE3 DB 0AH,0DH,'****ALL ARE EQUAL****','$'
+
+  INPUT_M DB 0AH,0DH,'ENTER CHARACTER',0DH,0AH,'$'
+.CODE
+  MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX
+
+    MOV DX,OFFSET INPUT_M
+    MOV AH,09
+    INT 21H
+
+    MOV AH,01
+    INT 21H
+
+    MOV CHAR,AL
+    MOV DX,OFFSET INPUT_M
+
+    MOV AH,09
+    INT 21H
+
+    MOV AH,01
+    INT 21H
+
+    CMP CHAR,AL
+    JE  EQUAL
+    JGE GREAT
+
+    MOV DX,OFFSET MESSAGE2
+    JMP PRINT
+EQUAL:  MOV DX,OFFSET MESSAGE3
+    JMP PRINT
+    GREAT:  MOV DX,OFFSET MESSAGE1
+PRINT:  MOV AH,09
+        INT 21H
+    MOV AH,4CH
+    INT 21H
+  MAIN ENDP
+    END MAIN
+
